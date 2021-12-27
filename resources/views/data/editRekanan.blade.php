@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <div class="Page-Header">
+    {{-- <div class="Page-Header">
         <h1>
             Edit Rekanan
         </h1>
@@ -16,6 +16,6 @@
             <input type="text" value="}">
             <input type="hidden" name="__method" value="PUT">
         </form>
-    </div>
+    </div> --}}
 
 @endsection
