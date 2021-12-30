@@ -13,14 +13,36 @@ class DataPejabat extends Controller
         $pejabat = PejabatModel::all();
         return view('data.pejabat',['pejabat'=>$pejabat]);
     }
+
+    public function add()
+    {
+
+        return view('data.tambahPejabat');
+    }
+
+    public function store(Request $request)
+    {
+        $pejabat = new PejabatModel();
+        $pejabat->nip = $request->nip;
+        $pejabat->nama_pejabat = $request->nama_pejabat;
+        $pejabat->jabatan = $request->jabatan;
+        $pejabat->save();
+        return redirect('/pejabat');
+
+    }
+
     public function edit($id)
     {
-        $rekanan = PejabatModel::where('id_pejabat',$id)->get();
-        return view('data.editPejabat');
+        $pejabat = PejabatModel::where('id_pejabat',$id)->get();
+
+        return view('data.editPejabat', compact('pejabat'));
     }
+
     public function destroy($id){
 
-       PejabatModel::where('id_pejabat',$id)->delete;
-       return redirect('/pejabat');
+        $pejabat = PejabatModel::where('id_pejabat', $id);
+        $pejabat->delete();
+        return redirect('/pejabat');
     }
+
 }

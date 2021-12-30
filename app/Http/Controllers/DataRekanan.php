@@ -21,4 +21,8 @@ class DataRekanan extends Controller
         return view('data.editRekanan',['rekanan' => $rekanan]);
 
     }
+
+    public function destroy($id){
+
+    }
 }

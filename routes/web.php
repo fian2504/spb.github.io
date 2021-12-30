@@ -28,6 +28,8 @@ Route::get('/rekanan','DataRekanan@index');
 Route::get('/rekanan/edit/{id}','DataRekanan@edit');
 
 Route::get('/pejabat','DataPejabat@index');
+Route::get('/pejabat/tambah','DataPejabat@add');
+Route::post('/pejabat','DataPejabat@store');
 Route::get('/pejabat/edit/{id}','DataPejabat@edit');
 Route::delete('/pejabat/hapus/{id}', 'DataPejabat@destroy');
 

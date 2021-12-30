@@ -19,9 +19,12 @@
                 </tr>
             </thead>
             <tbody>
+                @php
+                    $no = 1
+                @endphp
                 @foreach ($pejabat as $item)
                     <tr>
-                        <th>{{$item->id_pejabat}}</th>
+                        <th>{{$no++}}</th>
                         <th>{{$item->nip}}</th>
                         <th>{{$item->nama_pejabat}}</th>
                         <th>{{$item->jabatan}}</th>
@@ -29,7 +32,8 @@
                             <a href="pejabat/edit/{{$item->id_pejabat}}  "><button class="btn btn-xs btn-info">
                             <i class="ace-icon fa fa-pencil bigger-120"></i>
                             </button></a>
-                            <form action="pejabat/hapus/{{$item->id_pejabat}}" method="POST">
+                            <form action="pejabat/hapus/{{$item->id_pejabat}}" method="post">
+                                @csrf
                                 @method('DELETE')
                                 <button  class="btn btn-xs btn-danger" onclick="return confirm('Apakah yakin menghapus data')">
                                     <i class="ace-icon fa fa-trash-o bigger-120"></i>

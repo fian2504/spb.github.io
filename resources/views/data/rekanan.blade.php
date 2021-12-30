@@ -23,9 +23,12 @@
                 </tr>
            </thead>
            <tbody>
+               @php
+                   $no = 1
+               @endphp
                @foreach ($rekanan as $rekanan)
                    <tr>
-                       <th>{{$rekanan->id_rekanan}}</th>
+                       <th>{{$no++}}</th>
                        <th>{{$rekanan->nama_rekanan}}</th>
                        <th>{{$rekanan->alamat}}</th>
                        <th>{{$rekanan->npwp}}</th>
