@@ -34,31 +34,28 @@
                        <th>{{$rekanan->npwp}}</th>
                        <th>{{$rekanan->owner}}</th>
                        <th>
-
                             <a href="rekanan/edit/{{$rekanan->id_rekanan}}  "><button class="btn btn-xs btn-info">
                             <i class="ace-icon fa fa-pencil bigger-120"></i>
                             </button></a>
-                            <a href="rekanan/hapus" class="delete" data-confirm="Are you sure to delete this item?"><button class="btn btn-xs btn-danger">
-                                <i class="ace-icon fa fa-trash-o bigger-120"></i>
-                            </button></a>
+                            <form action="rekanan/hapus/{{$rekanan->id_rekanan}}" method="post">
+                                @csrf
+                                @method('DELETE')
+                                <button  class="btn btn-xs btn-danger" onclick="return confirm('Apakah yakin menghapus data')">
+                                    <i class="ace-icon fa fa-trash-o bigger-120"></i>
+                                </button>
+                            </form>
 
                         </th>
                    </tr>
                @endforeach
            </tbody>
-
-
         </table>
     </div>
 
 
-    {{-- <div class="container">
-        @foreach ($rekanan as $user)
-            {{ $user->id_rekanan }}
-        @endforeach
-    </div>
 
-    {{ $rekanan->links() }} --}}
+
+    {{-- {{ $rekanan->links() }} --}}
 <script>
     var deleteLinks = document.querySelectorAll('.delete');
 

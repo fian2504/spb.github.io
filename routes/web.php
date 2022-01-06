@@ -26,6 +26,9 @@ Route::get('/spb', 'SpbController@index');
 // Data
 Route::get('/rekanan','DataRekanan@index');
 Route::get('/rekanan/edit/{id}','DataRekanan@edit');
+Route::post('/rekanan','DataRekanan@store');
+Route::get('/rekanan/tambah','DataRekanan@add');
+Route::delete('/rekanan/hapus/{id}', 'DataRekanan@destroy');
 
 Route::get('/pejabat','DataPejabat@index');
 Route::get('/pejabat/tambah','DataPejabat@add');
