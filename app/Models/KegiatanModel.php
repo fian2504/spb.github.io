@@ -9,6 +9,6 @@ class KegiatanModel extends Model
 {
     public function spbmodel()
     {
-        return $this->belongsTo(KegiatanModel::class);
+        return $this->belongsTo(SpbModel::class);
     }
 }

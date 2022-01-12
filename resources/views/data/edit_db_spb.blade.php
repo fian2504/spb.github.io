@@ -3,35 +3,38 @@
 @section('content')
 {{-- {{dd($date->translatedFormat('Y'));}} --}}
 
-{{-- ERROR --}}
 
+{{-- ERROR --}}
     <div class="page-header">
         <h1>
-            Surat Pesanan Barang
+            Edit Surat Pesanan Barang
         </h1>
     </div>
+        @php
+            $no = $spb->no_surat;
+            $split = explode('/',$no);
+        @endphp
 
     <div class="container ">
         <form method="post" action="/db_spb">
             @csrf
             <div class="form-group row"> {{-- Nomor Surat --}}
 
-
                 <label class="col-sm-3 col-form-label-sm text-right" for="sbd"> Nomor Surat</label>
                 <div class="col-sm-1">
-                    <input type="text" title="Nomor Surat Terakhir" class="form-control" name="nomor" placeholder="000" id="nomor" value="{{$no_terakhir}}">
+                    <input type="text" title="Nomor Surat Terakhir" class="form-control" name="nomor" placeholder="000" id="nomor" value="{{$split[0]}}" >
                 </div>
                 <div class="col-sm-1">
-                    <input type="text" class="form-control" name="sp" placeholder="SP" value="SP" id="sp">
+                    <input type="text" class="form-control" name="sp" placeholder="SP" value="{{$split[1]}}" id="sp">
                 </div>
                 <div class="col-sm-2">
-                    <input type="text" class="form-control" name="tki" placeholder="C" value="TKI.Kominfo" id="tki">
+                    <input type="text" class="form-control" name="tki" placeholder="C" value="{{$split[2]}}" id="tki">
                 </div>
                 <div class="col-sm-1">
-                    <input type="text" title="Tanggal Pembuatan" class="form-control" name="tgl_surat" placeholder="Tanggal" id="tgl_surat" value="{{$date->translatedFormat('d')}}">
+                    <input type="text" title="Tanggal Pembuatan" class="form-control" name="tgl_surat" placeholder="Tanggal" id="tgl_surat" value="{{$split[3]}}">
                 </div>
                 <div class="col-sm-1">
-                    <input type="text" class="form-control" name="thn_surat" placeholder="Tahun" id="thn_surat" value="{{$date->translatedFormat('Y')}}">
+                    <input type="text" class="form-control" name="thn_surat" placeholder="Tahun" id="thn_surat" value="{{$split[4]}}">
 
                 </div>
             </div>
@@ -40,7 +43,7 @@
                 <label class="col-sm-3 col-form-label-sm text-right" for="kepada"> Kepada</label>
                 <div class="col-sm-4">
                     <select name="rekanan_nama" class="chosen-select form-control" id="kepada" data-placeholder="Rekanan" onchange="set_alamat()">
-                        <option value=""></option>
+                        <option value="{{$spb->kepada_rekanan->id}}">{{$spb->kepada_rekanan->nama_rekanan}}</option>
                             @foreach ($rekanan as $rekanan)
                                 <option value="{{$rekanan->id}}">{{$rekanan->nama_rekanan}}</option>
                             @endforeach
@@ -48,7 +51,7 @@
                 </div>
 
                 <div class="col-sm-4">
-                    <input name="rekanan_alamat" type="text" class="form-control" placeholder="Alamat" id="alamat" value="">
+                    <input name="rekanan_alamat" type="text" class="form-control" id="alamat" value="{{$spb->kepada_rekanan->alamat}}">
                 </div>
             </div>
 
@@ -57,14 +60,14 @@
                 <label class="col-sm-3 col-form-label-sm text-right" for="pb"> Penerima Barang</label>
                 <div class="col-sm-4">
                     <select name="penerima_nama" class="chosen-select form-control" id="pb" onchange="set_nip(this, 'nip_0')">
-                        <option value=""></option>
+                        <option value="{{$spb->penerima_pejabat->id}}">{{$spb->penerima_pejabat->nama_pejabat}}</option>
                         @foreach ($pejabat as $pej)
                             <option value="{{$pej->id}}">{{$pej->nama_pejabat}}</option>
                         @endforeach
                     </select>
                 </div>
                 <div class="col-sm-4">
-                    <input name="penerima_nip" type="text" class="form-control" disabled=True placeholder="Nip" id="nip_0" value="">
+                    <input name="penerima_nip" type="text" class="form-control" disabled=True id="nip_0" value="{{$spb->penerima_pejabat->nip}}">
                 </div>
             </div>
 
@@ -72,7 +75,7 @@
 
                 <label for="kpln" class="col-sm-3 col-form-label-sm text-right"> Keperluan</label>
                 <div class="col-sm-8">
-                    <input name="keperluan" type="text" id="kpln" class="form-control @error('keperluan') is-invalid @enderror" placeholder="Keperluan" value="{{old('keperluan')}}">
+                    <input name="keperluan" type="text" id="kpln" class="form-control @error('kpln') is-invalid @enderror" placeholder="Keperluan" value="{{$spb->keperluan}}">
                 </div>
             </div>
 
@@ -89,7 +92,7 @@
                 <label class="col-sm-3 col-form-label-sm text-right" for="tgl_pngrmn"> Tanggal Pengiriman</label>
                 <div class="col-sm-8">
                     <div class="col-sm-8">
-                        <input type="date" name="tgl_pengiriman" id="tgl_pngrmn">
+                        <input type="date" name="tgl_pengiriman" id="tgl_pngrmn" value="{{$spb->tgl_pengiriman}}">
                     </div>
                 </div>
             </div>
@@ -106,21 +109,21 @@
                                     <th class="col-xs-1 text-center">No</th>
                                     <th class="text-center">Jenis Kegiatan</th>
                                     <th class="text-center">Volume</th>
-                                    <th class="text-center">Satuan</th>
                                     <th class="text-center">Harga</th>
                                     <th class="text-center">Total</th>
                                 </tr>
                             </thead>
                             <tbody id="tbody">
+                                @foreach ($spb->kegiatan as $item)
                                 <tr>
                                     <th class="text-center align-middle">1</th>
-                                    <th><input type="text" id="kgtn-1"  class="form-control" placeholder="Kegiatan" name="kgtn[]"></th>
-                                    <th><input type="text" id="vlm-1" class="form-control" placeholder="Volume" onchange="tambahTotal(1)" name="vlm[]"></th>
-                                    <th><input type="text" id="satuan" class="form-control"  placeholder="Satuan" name="satuan[]" value="{{old('satuan')}}"></th>
-                                    <th><input type="text" id="hrg-1" class="form-control" placeholder="Harga" onchange="tambahTotal(1)" name="hrg[]"></th>
-                                    <th><input type="text" id="ttl-1" class="form-control" disabled=True placeholder="" value="" name=""></th>
+                                    <th><input type="text" id="kgtn-1"  class="form-control" placeholder="Kegiatan" name="kgtn[]" value="{{$item->kegiatan}}"></th>
+                                    <th><input type="text" id="vlm-1" class="form-control" placeholder="Volume" onchange="tambahTotal(1)" name="vlm[]" value="{{$item->value}}"></th>
+                                    <th><input type="text" id="hrg-1" class="form-control" placeholder="Harga" onchange="tambahTotal(1)" name="hrg[]" value="{{$item->harga}}"></th>
+                                    <th><input type="text" id="ttl-1" class="form-control" disabled=True placeholder="" value="{{$item->value * $item->harga}}" name=""></th>
                                     <th></th>
                                 </tr>
+                                @endforeach
                             </tbody>
                         </div>
                     </table>
@@ -138,7 +141,7 @@
                 <div class="col-sm-8">
                     <div class="col-sm-8    ">
                         <span>Karanganyar</span>
-                        <input type="date" name="tgl_pembuatan" id="tgl_pmbtn">
+                        <input type="date" name="tgl_pembuatan" id="tgl_pmbtn" value="{{$spb->tgl_pembuatan}}">
                     </div>
                 </div>
             </div>
@@ -147,22 +150,22 @@
                 <div class="col-sm-6">
                     <label for="pngshn" class="text-center"> Pengesahan 1 </label>
                     <select name="pengesahan1" id="pngshn" class="chosen-select form-control" onchange="set_nip(this, 'nip_1')">
-                        <option value=""></option>
+                        <option value="{{$spb->pengesahan1_pejabat->id}}">{{$spb->pengesahan1_pejabat->nama_pejabat}}</option>
                         @foreach ($pejabat as $pej)
                         <option value="{{$pej->id}}">{{$pej->nama_pejabat}}</option>
                         @endforeach
                     </select>
-                    <input type="text" class="form-control" id="nip_1" name="pengesahan1_nip" placeholder="SP" value="NIP"  disabled=True style="margin-top: 0.4em">
+                    <input type="text" class="form-control" value="{{$spb->pengesahan1_pejabat->nip}}" id="nip_1" name="pengesahan1_nip" placeholder="SP" value="NIP"  disabled=True style="margin-top: 0.4em">
                 </div>
                 <div class="col-sm-6">
                     <label for="pngshn" class="text-center"> Pengesahan 2 </label>
                     <select class="chosen-select form-control" name="pengesahan2" id="pengesahan2" data-placeholder="pengesahan2" width: 50px onchange="set_nip(this, 'nip_2')">
-                        <option value ="" ></option>
+                        <option value ="{{$spb->pengesahan2_pejabat->id}}" >{{$spb->pengesahan2_pejabat->nama_pejabat}}</option>
                         @foreach ($pejabat as $pej2)
                         <option value="{{$pej2->id}}">{{$pej2->nama_pejabat}}</option>
                         @endforeach
                     </select>
-                    <input type="text" class="form-control" name="pengesahan2_nip" placeholder="SP" disabled=True value="NIP" id="nip_2" style="margin-top: 0.4em">
+                    <input type="text" class="form-control" value="{{$spb->pengesahan2_pejabat->nip}}" name="pengesahan2_nip" placeholder="SP" disabled=True value="NIP" id="nip_2" style="margin-top: 0.4em">
                 </div>
             </div>
             <input type="submit" value="Submit" class="btn btn-submit" style="margin-top: 0.5em">
@@ -219,7 +222,6 @@
                     <td class="text-center align-middle">${rowIdx}</td>
                     <td><input type="text" id="kgtn-${rowIdx}" name="kgtn[]" class="form-control" placeholder="Kegiatan"></td>
                     <td><input type="text" id="vlm-${rowIdx}" name="vlm[]" class="form-control" placeholder="Volume" onchange="tambahTotal(${rowIdx})"></td>
-                    <td><input type="text" id="satuan-${rowIdx}" name="satuan[]" class="form-control" placeholder="Satuan"></td>
                     <td><input type="text" id="hrg-${rowIdx}" name="hrg[]" class="form-control" placeholder="Harga" onchange="tambahTotal(${rowIdx})"></td>
                     <td><input type="text" id="ttl-${rowIdx}" name="" disabled=True class="form-control" placeholder="Total"></td>
                     <td class="text-center">

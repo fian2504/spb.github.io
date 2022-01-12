@@ -7,6 +7,12 @@ use App\Models\PejabatModel;
 use App\Models\RekananModel;
 use App\Models\KegiatanModel;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
+// use PDF;
+use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade as PDF;
+
+
 
 class SpbController extends Controller
 {
@@ -14,34 +20,52 @@ class SpbController extends Controller
     {
         $rekanan = RekananModel::all();
         $pejabat = PejabatModel::all();
-        $spb = spbModel::all();
-
-        return view('form.spb', ['pejabat'=>$pejabat,'spb'=>$spb, 'rekanan'=>$rekanan]);
+        $spb = spbModel::latest()->first();
+        if ($spb) {
+            $split = explode('/',$spb->no_surat);
+            $no_terakhir = (int)$split[0] + 1;
+        }else{
+            $no_terakhir = 1;
+        }
+        $date = Carbon::now();
+        // dd($date->translatedFormat('Y'));
+        return view('form.spb', ['pejabat'=>$pejabat,'no_terakhir'=>$no_terakhir, 'rekanan'=>$rekanan, 'date'=>$date]);
     }
 
     public function pb1($id)
     {
-        $pejabat = PejabatModel::find($id)->get();
+        $pejabat = PejabatModel::findOrFail($id);
         return response()->json($pejabat);
     }
 
     public function setAlamat($id)
     {
-        $rekanan = RekananModel::find($id)->get();
+        $rekanan = RekananModel::findOrFail($id);
         return response()->json($rekanan);
     }
 
     public function new_db_spb(Request $request)
     {
         // dd($request);
-
         $no_surat = "{$request->nomor}/{$request->sp}/{$request->tki}/{$request->tgl_surat}/{$request->thn_surat}";
+
+        $request->validate([
+            'rekanan_nama' => 'required|integer',
+            'tgl_pengiriman' => 'required',
+            'keperluan' => 'required',
+            'tgl_pembuatan' => 'required',
+            'penerima_nama' => 'required',
+            'pengesahan1' => 'required',
+            'pengesahan2' => 'required',
+        ]);
+
         $spb = new SpbModel();
         $spb->no_surat = $no_surat;
         $spb->kepada = $request->rekanan_nama;
-        $spb->penerima = $request->penerima_nama;
         $spb->tgl_pengiriman = $request->tgl_pengiriman;
-        $spb->tgl_pembuatan = $request->tgl_pengiriman;
+        $spb->keperluan = $request->keperluan;
+        $spb->tgl_pembuatan = $request->tgl_pembuatan;
+        $spb->penerima = $request->penerima_nama;
         $spb->pengesahan1 = $request->pengesahan1;
         $spb->pengesahan2 = $request->pengesahan2;
         $spb->save();
@@ -52,39 +76,39 @@ class SpbController extends Controller
             $kegiatan = new KegiatanModel();
             $kegiatan->kegiatan = $request->kgtn[$i];
             $kegiatan->value  = $request->vlm[$i];
+            $kegiatan->satuan = $request->satuan[$i];
             $kegiatan->harga = $request->hrg[$i];
-            // $kegiatan->total = $request->ttl[$i];
             $kegiatan->spb_id = $spb->id;
             $kegiatan->save();
             $i++;
         }
 
         return redirect('/db_spb')->with('info','Data Berhasil di Tambahkan');
-        // if( $count > 0){
-        //     foreach($count as $key){
-        //         $kegiatan->kegiatan = $request->kgtn[$key];
-        //         $kegiatan->value  = $request->vlm[$key];
-        //         $kegiatan->harga = $request->hrg[$key];
-        //         $kegiatan->spb_id = $spb->id;
-        //         $kegiatan->Save();
-        //     }
-        // }
-
-
-
-        // foreach ($request as $sku){
-        //     // Code Here
-        //     $kegiatan->kegiatan =
-        //     $kegiatan->value  =
-        //     $kegiatan->harga =
-        //     $kegiatan->spb_id = $spb->id;
-        // }
-        // $kegiatan->save();
     }
+
+
+    // DB SPB
 
     public function db_spb()
     {
+        $spb = SpbModel::get();
 
-        return view('data.db_spb');
+        return view('data.db_spb', compact('spb'));
+    }
+
+    public function edit_db_spb($id)
+    {
+        $spb = spbModel::findOrFail($id);
+        $rekanan = RekananModel::all();
+        $pejabat = PejabatModel::all();
+        return view ('data.edit_db_spb', ['spb' => $spb, 'rekanan' => $rekanan, 'pejabat' => $pejabat]);
+    }
+
+    public function print($id)
+    {
+        $spb = SpbModel::findOrFail($id);
+        // $pdf = PDF::loadView('data.print', ['spb' => $spb]);
+        // return $pdf;
+        return view('data.print',['spb' => $spb]);
     }
 }

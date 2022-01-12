@@ -33,6 +33,8 @@ class DataRekanan extends Controller
 
     public function edit($id){
         $rekanan = RekananModel::find($id);
+        if ($rekanan == null )abort(404);
+
 
         if(!$rekanan)
             abort(404);
@@ -54,6 +56,8 @@ class DataRekanan extends Controller
 
     public function destroy($id){
         $rekanan = RekananModel::find($id);
+        if ($rekanan == null )abort(404);
+
         $rekanan->delete();
         return redirect('/rekanan')->with('warning','Data Rekanan Berhasil di Hapus');
 

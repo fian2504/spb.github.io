@@ -17,8 +17,8 @@ class CreateKegiatanModelsTable extends Migration
             $table->id();
             $table->string('kegiatan');
             $table->integer('value');
+            $table->string('satuan');
             $table->integer('harga');
-            $table->integer('total');
             $table->unsignedBigInteger('spb_id')->nullable();
             $table->timestamps();
 

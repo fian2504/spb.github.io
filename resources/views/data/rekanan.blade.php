@@ -6,7 +6,8 @@
         <h1>Data Rekanan</h1>
     </div>
     <div class="col-xs-10">
-        <a href="/rekanan/tambah">Tambah Rekanan</a>
+        {{-- <a href="/rekanan/tambah">Tambah Rekanan</a> --}}
+        <a href="/rekanan/tambah" class="btn btn-lg btn-success"><i class="ace-icon glyphicon glyphicon-plus"></i>Tambah Rekanan</a>
     </div>
 
     <div class="col-xs-12">

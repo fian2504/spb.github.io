@@ -7,5 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class PejabatModel extends Model
 {
-    use HasFactory;
+    public function spbmodel()
+    {
+        return $this->belongsTo(SpbModel::class);
+    }
 }

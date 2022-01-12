@@ -33,6 +33,4 @@
 </div>
 @endif
 
-<script>
-  $('div.succes').delay(3000).slideUp(300);
-</script>
+

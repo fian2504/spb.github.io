@@ -19,6 +19,7 @@ class CreateSpbModelsTable extends Migration
             $table->unsignedBigInteger('kepada')->nullable();
             $table->unsignedBigInteger('penerima')->nullable();
             $table->date('tgl_pengiriman');
+            $table->string('keperluan');
             $table->date('tgl_pembuatan');
             $table->unsignedBigInteger('pengesahan1')->nullable();
             $table->unsignedBigInteger('pengesahan2')->nullable();

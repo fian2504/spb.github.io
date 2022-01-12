@@ -22,7 +22,9 @@ class DataPejabat extends Controller
 
     public function edit($id)
     {
+
         $data = PejabatModel::find($id);
+        if ($data == null )abort(404);
 
         return view('data.editPejabat', compact('data'));
     }
@@ -52,6 +54,8 @@ class DataPejabat extends Controller
     public function destroy($id){
 
         $pejabat = PejabatModel::find($id);
+        if ($pejabat == null )abort(404);
+
         $pejabat->delete();
         return redirect('/pejabat')->with('warning','Data Berhasil di Hapus');
     }
