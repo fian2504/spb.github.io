@@ -43,6 +43,7 @@
 		<script src="assets/ace-master/assets/js/html5shiv.min.js"></script>
 		<script src="assets/ace-master/assets/js/respond.min.js"></script>
 		<![endif]-->
+        @yield('customcss')
 	</head>
 
 	<body class="no-skin">
@@ -62,7 +63,11 @@
 						<div class="row">
 							<div class="col-xs-12">
 								<!-- PAGE CONTENT BEGINS -->
+                                @include('flash-message')
+
 								@yield('content')
+
+
 								<!-- PAGE CONTENT ENDS -->
 							</div><!-- /.col -->
 						</div><!-- /.row -->
@@ -105,10 +110,29 @@
 		<!-- ace scripts -->
 		<script src="/assets/ace-master/assets/js/ace-elements.min.js"></script>
 		<script src="/assets/ace-master/assets/js/ace.min.js"></script>
-		<script src="/assets/ace-master/assets/js/daterangepicker.min.js"></script>
-		<script src="/assets/ace-master/assets/js/bootstrap-datepicker.min.js"></script>
+		{{-- <script src="/assets/ace-master/assets/js/daterangepicker.min.js"></script>
+		<script src="/assets/ace-master/assets/js/bootstrap-datepicker.min.js"></script> --}}
 
+
+        <!-- page specific plugin scripts -->
+		<script src="/assets/ace-master/assets/js/jquery.dataTables.min.js"></script>
+		<script src="/assets/ace-master/assets/js/jquery.dataTables.bootstrap.min.js"></script>
+		<script src="/assets/ace-master/assets/js/dataTables.buttons.min.js"></script>
+		<script src="/assets/ace-master/assets/js/buttons.flash.min.js"></script>
+		<script src="/assets/ace-master/assets/js/buttons.html5.min.js"></script>
+		<script src="/assets/ace-master/assets/js/buttons.print.min.js"></script>
+		<script src="/assets/ace-master/assets/js/buttons.colVis.min.js"></script>
+		<script src="/assets/ace-master/assets/js/dataTables.select.min.js"></script>
 
 		<!-- inline scripts related to this page -->
 	</body>
+    <script>
+        //remove notip
+        $("document").ready(function(){
+    setTimeout(function(){
+       $("div.alert").remove();
+    }, 3500 ); // 3.5 secs
+    });
+    </script>
+    @yield('customjs')
 </html>

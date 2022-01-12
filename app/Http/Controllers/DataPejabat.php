@@ -20,29 +20,40 @@ class DataPejabat extends Controller
         return view('data.tambahPejabat');
     }
 
-    public function store(Request $request)
+    public function edit($id)
+    {
+        $data = PejabatModel::find($id);
+
+        return view('data.editPejabat', compact('data'));
+    }
+
+    public function store(Request $request) //update
     {
         $pejabat = new PejabatModel();
         $pejabat->nip = $request->nip;
         $pejabat->nama_pejabat = $request->nama_pejabat;
         $pejabat->jabatan = $request->jabatan;
         $pejabat->save();
-        return redirect('/pejabat');
+        return redirect('/pejabat')->with('info','Data Berhasil di Tambahkan');
 
     }
 
-    public function edit($id)
+    public function update(Request $request , $id)
     {
-        $pejabat = PejabatModel::where('id_pejabat',$id)->get();
+        $pejabat = PejabatModel::find($id);
+        $pejabat->nip = $request->nip;
+        $pejabat->nama_pejabat = $request->nama_pejabat;
+        $pejabat->jabatan = $request->jabatan;
+        $pejabat->save();
+        return redirect('/pejabat')->with('success','Data Pejabat Berhasil di update');
 
-        return view('data.editPejabat', compact('pejabat'));
     }
 
     public function destroy($id){
 
-        $pejabat = PejabatModel::where('id_pejabat', $id);
+        $pejabat = PejabatModel::find($id);
         $pejabat->delete();
-        return redirect('/pejabat');
+        return redirect('/pejabat')->with('warning','Data Berhasil di Hapus');
     }
 
 }

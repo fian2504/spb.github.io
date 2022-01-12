@@ -10,7 +10,7 @@
     </div>
 
     <div class="col-xs-12">
-        <table class="table  table-bordered table-hover">
+        <table class="table table-bordered table-hover" id="tabel1">
            <thead>
                 <tr>
                     <th>No</th>
@@ -26,18 +26,18 @@
                @php
                    $no = 1
                @endphp
-               @foreach ($rekanan as $rekanan)
+               @foreach ($rekanan as $rek)
                    <tr>
                        <th>{{$no++}}</th>
-                       <th>{{$rekanan->nama_rekanan}}</th>
-                       <th>{{$rekanan->alamat}}</th>
-                       <th>{{$rekanan->npwp}}</th>
-                       <th>{{$rekanan->owner}}</th>
+                       <th>{{$rek->nama_rekanan}}</th>
+                       <th>{{$rek->alamat}}</th>
+                       <th>{{$rek->npwp}}</th>
+                       <th>{{$rek->owner}}</th>
                        <th>
-                            <a href="rekanan/edit/{{$rekanan->id_rekanan}}  "><button class="btn btn-xs btn-info">
+                            <a href="rekanan/edit/{{$rek->id}}  "><button class="btn btn-xs btn-info">
                             <i class="ace-icon fa fa-pencil bigger-120"></i>
                             </button></a>
-                            <form action="rekanan/hapus/{{$rekanan->id_rekanan}}" method="post">
+                            <form action="rekanan/hapus/{{$rek->id}}" method="post">
                                 @csrf
                                 @method('DELETE')
                                 <button  class="btn btn-xs btn-danger" onclick="return confirm('Apakah yakin menghapus data')">
@@ -52,24 +52,17 @@
         </table>
     </div>
 
+    {{-- <div class="text-center">
+        {{ $rekanan->links() }}
+    </div> --}}
 
+@endsection
 
-
-    {{-- {{ $rekanan->links() }} --}}
+@section('customjs')
 <script>
-    var deleteLinks = document.querySelectorAll('.delete');
-
-    for (var i = 0; i < deleteLinks.length; i++) {
-    deleteLinks[i].addEventListener('click', function(event) {
-        event.preventDefault();
-
-        var choice = confirm(this.getAttribute('data-confirm'));
-
-        if (choice) {
-            window.location.href = this.getAttribute('href');
-        }
-    });
-}
+    jQuery(function($) {
+        var tableId = '#tabel1'
+        var $_table = $(tableId).DataTable()
+    })
 </script>
-
 @endsection

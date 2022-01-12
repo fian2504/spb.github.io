@@ -27,23 +27,35 @@ class DataRekanan extends Controller
         $rekanan->npwp=$request->npwp;
         $rekanan->owner=$request->owner;
         $rekanan->save();
-        return redirect('/rekanan');
+        return redirect('/rekanan')->with('success','Data Rekanan Berhasil di Tambahkan');
 
     }
 
     public function edit($id){
-        $rekanan = RekananModel::where('id_rekanan',$id)->get();
+        $rekanan = RekananModel::find($id);
 
         if(!$rekanan)
             abort(404);
-        return view('data.editRekanan',['rekanan' => $rekanan]);
+        return view('data.editRekanan',['data' => $rekanan]);
+
+    }
+
+    public function update(Request $request , $id)
+    {
+        $rekanan = RekananModel::find($id);
+        $rekanan->nama_rekanan = $request->nama_rekanan;
+        $rekanan->alamat = $request->alamat;
+        $rekanan->npwp = $request->npwp;
+        $rekanan->owner = $request->owner;
+        $rekanan->save();
+        return redirect('/rekanan')->with('info','Data Rekanan Berhasil di update');
 
     }
 
     public function destroy($id){
-        $rekanan = RekananModel::where('id_rekanan', $id);
+        $rekanan = RekananModel::find($id);
         $rekanan->delete();
-        return redirect('/rekanan');
+        return redirect('/rekanan')->with('warning','Data Rekanan Berhasil di Hapus');
 
     }
 }

@@ -5,10 +5,10 @@
         <h1>Data Pejabat</h1>
     </div>
     <div class="col-xs-10">
-        <a href="/pejabat/tambah">Tambah Rekanan</a>
+        <a href="/pejabat/tambah">Tambah Pejabat</a>
     </div>
     <div class="col-xs-12">
-        <table class="table table-bordered table-hover">
+        <table class="table table-bordered table-hover" id="tabel1">
             <thead>
                 <tr>
                     <th>No</th>
@@ -29,10 +29,10 @@
                         <th>{{$item->nama_pejabat}}</th>
                         <th>{{$item->jabatan}}</th>
                         <th>
-                            <a href="pejabat/edit/{{$item->id_pejabat}}  "><button class="btn btn-xs btn-info">
+                            <a href="pejabat/edit/{{$item->id}}  "><button class="btn btn-xs btn-info">
                             <i class="ace-icon fa fa-pencil bigger-120"></i>
                             </button></a>
-                            <form action="pejabat/hapus/{{$item->id_pejabat}}" method="post">
+                            <form action="pejabat/hapus/{{$item->id}}" method="post">
                                 @csrf
                                 @method('DELETE')
                                 <button  class="btn btn-xs btn-danger" onclick="return confirm('Apakah yakin menghapus data')">
@@ -64,4 +64,13 @@
         });
     }
     </script> --}}
+@endsection
+
+@section('customjs')
+<script>
+    jQuery(function($) {
+        var tableId = '#tabel1'
+        var $_table = $(tableId).DataTable()
+    })
+</script>
 @endsection

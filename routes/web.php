@@ -22,19 +22,26 @@ Route::get('/home', function () {
 });
 
 Route::get('/spb', 'SpbController@index');
+Route::get('/spb/pb1/{id}','SpbController@pb1');
+Route::get('/spb/alamat/{id}', 'SpbController@setAlamat');
+Route::post('/db_spb', 'SpbController@new_db_spb');
+Route::get('/db_spb', 'SpbController@db_spb');
 
 // Data
 Route::get('/rekanan','DataRekanan@index');
+Route::get('/rekanan/tambah','DataRekanan@add');
 Route::get('/rekanan/edit/{id}','DataRekanan@edit');
 Route::post('/rekanan','DataRekanan@store');
-Route::get('/rekanan/tambah','DataRekanan@add');
+Route::put('/rekanan/{id}','DataRekanan@update');  //edit rekanan
+
 Route::delete('/rekanan/hapus/{id}', 'DataRekanan@destroy');
 
 Route::get('/pejabat','DataPejabat@index');
-Route::get('/pejabat/tambah','DataPejabat@add');
-Route::post('/pejabat','DataPejabat@store');
-Route::get('/pejabat/edit/{id}','DataPejabat@edit');
-Route::delete('/pejabat/hapus/{id}', 'DataPejabat@destroy');
+Route::get('/pejabat/tambah','DataPejabat@add');  //tambah pejabat
+Route::post('/pejabat','DataPejabat@store'); //tambah pejabat
+Route::get('/pejabat/edit/{id}','DataPejabat@edit');  //edit pejabat
+Route::put('/pejabat/{id}','DataPejabat@update');  //edit pejabat
+Route::delete('/pejabat/hapus/{id}', 'DataPejabat@destroy');  //hapus datapejabat
 
 
 

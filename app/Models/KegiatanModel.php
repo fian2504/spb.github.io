@@ -5,10 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class SpbModel extends Model
+class KegiatanModel extends Model
 {
-    public function kegiatanmodel()
+    public function spbmodel()
     {
-        return $this->hasMany(KegiatanModel::class);
+        return $this->belongsTo(KegiatanModel::class);
     }
 }
